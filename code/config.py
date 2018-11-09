@@ -19,9 +19,12 @@ lib_loc = '/Users/AlvinMBA/anaconda/lib/R'
 
 missing = ["*Missing*", "NULL"]
 
-print_status = False
+print_status = True
 
 ## Enter the integer number of CUIs to retain for each API search. Default setting will return up to 3 CUIs for each test name and each specimen type
 num_cuis = 10
+
+## For larger calls to RxNorm API, set mini-batch sizes
+batch_size = int(1e4)
 
 

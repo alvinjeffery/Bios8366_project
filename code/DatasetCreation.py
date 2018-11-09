@@ -265,26 +265,37 @@ def structured_elements2rxcui(data):
     if config.print_status:
         print('Initiating ' + str(len(search_terms)) + ' API requests for Unique Meds')
     
-    # make iterable list of URLs to send to api
-    urls = api_rxnorm.make_url_requests(search_terms, 'string')
-    
-    results = api_rxnorm.async_calls(urls)
-
-    # clean up & store in CSV
+    # prepare for storing in CSV
     structured_elements_to_rxcui = defaultdict(dict)
+    
+    # break dataframe into subsections to prevent API timeout
+    search_terms = [search_terms[i * config.batch_size:(i + 1) * config.batch_size] \
+                    for i in range((len(search_terms) + config.batch_size - 1) // config.batch_size)]
+    counter = 0
+                    
+    if config.print_status:
+        print('Large list of terms. Created ' + str(len(search_terms)) + ' batches.')
+    
+    for terms in search_terms:
+        if config.print_status:
+            counter += 1
+            print('Starting batch # ' + str(counter))
+        # make iterable list of URLs to send to api
+        urls = api_rxnorm.make_url_requests(terms, 'string')
+        results = api_rxnorm.async_calls(urls)
 
-    for result in results:
-        soup = BeautifulSoup(result, 'html.parser') #'xml')
-        cui_all = soup.find_all('rxcui')
-        cui = set([])
-        for c in cui_all:
-          cui.add(int(c.get_text()))
-        # add to dictionary
-        try:
-          unique_combo = soup.find('inputterm').get_text()
-          structured_elements_to_rxcui[unique_combo] = cui
-        except:
-          pass
+        for result in results:
+            soup = BeautifulSoup(result, 'html.parser') #'xml')
+            cui_all = soup.find_all('rxcui')
+            cui = set([])
+            for c in cui_all:
+              cui.add(int(c.get_text()))
+            # add to dictionary
+            try:
+              unique_combo = soup.find('inputterm').get_text()
+              structured_elements_to_rxcui[unique_combo] = cui
+            except:
+              pass
     
     structured_elements_to_rxcui = pd.DataFrame.from_dict(structured_elements_to_rxcui, orient='index')
     structured_elements_to_rxcui.reset_index(inplace=True)
@@ -321,28 +332,41 @@ def cui2class(data):
     # drop missing values
     search_terms = search_terms[~np.isnan(search_terms)]
     
-    if config.print_status:
-        print('Initiating API requests for Structured Elements')
-    
-    # make iterable list of URLs to send to api
-    urls = api_rxnorm.make_url_requests(search_terms, 'cui2class')
-    results = api_rxnorm.async_calls(urls)
-
-    # clean up & store in CSV
+    # prep for storing in CSV
     cui2class = defaultdict(dict)
+    
+    if config.print_status:
+        print('Initiating ' + str(len(search_terms)) + ' API requests for Drug Classes of RxCUIs')
 
-    for result in results:
-        soup = BeautifulSoup(result, 'html.parser') #'xml')
-        class_all = soup.find_all('classname')
-        classes = set([])
-        for c in class_all:
-          classes.add(c.get_text())
-        # add to dictionary
-        try:
-            unique_combo = soup.find('rxcui').get_text()
-            cui2class[unique_combo] = classes
-        except:
-            pass
+    # break dataframe into subsections to prevent API timeout
+    search_terms = [search_terms[i * config.batch_size:(i + 1) * config.batch_size] \
+                    for i in range((len(search_terms) + config.batch_size - 1) // config.batch_size)]
+    counter = 0
+                    
+    if config.print_status:
+        print('Large list of terms. Created ' + str(len(search_terms)) + ' batches.')
+
+    for terms in search_terms:
+        if config.print_status:
+            counter += 1
+            print('Starting batch # ' + str(counter))
+            
+        # make iterable list of URLs to send to api
+        urls = api_rxnorm.make_url_requests(terms, 'cui2class')
+        results = api_rxnorm.async_calls(urls)
+        
+        for result in results:
+            soup = BeautifulSoup(result, 'html.parser') #'xml')
+            class_all = soup.find_all('classname')
+            classes = set([])
+            for c in class_all:
+              classes.add(c.get_text())
+            # add to dictionary
+            try:
+                unique_combo = soup.find('rxcui').get_text()
+                cui2class[unique_combo] = classes
+            except:
+                pass
     
     cui2class = pd.DataFrame.from_dict(cui2class, orient='index')
     cui2class.reset_index(inplace=True)
@@ -351,13 +375,6 @@ def cui2class(data):
     for i in range(1, cui2class.shape[1]):
         cnames.append('cat'+str(i))
     cui2class.columns = cnames
-    
-    if config.print_status:
-        print('API requests for Structured Elements to RxCUI Complete.')
-        print('Initiating API requests for generic & brand RxCUIs...')
-
-    # search for generic & brand names
-    #rxcui_brand_generic = getBrandGeneric(cui2class, cui_col='rxcui1')
     
     # coerce from dictionary to dataframe to allow merge
     #df = pd.DataFrame.from_dict(rxcui_brand_generic, orient='index')
