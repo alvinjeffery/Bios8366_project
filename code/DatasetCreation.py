@@ -248,44 +248,55 @@ def pharmaorder2rxcui():
 # convert PharmacyOrderableItems to RxCUIs - only need to execute once
 #pharmaorder2rxcui()
 
-def structured_elements2rxcui():
+def structured_elements2rxcui(data):
     """
     Creates a .csv file containing the results of the RxNorm API
     Allows calls to be made only once & can be merged onto data cube
     Input: aggregated source data as a dataframe
     Output: CSV file with the unique combination of ingredient/strength/unit/form that had a corresponding RxNorm CUI
     """
-    
-    if os.path.exists('./structured_elements_to_rxcui.csv'):
-        if config.print_status:
-            print('Structured Elements already created in .csv file')
-        return None
+
 
     # load data & find unique values
-    df = load_agg_data()
-    structured_elements = df[['DrugNameWithoutDose', 'StrengthNumeric', 'DrugUnit', 'DosageForm']].drop_duplicates()
+    df = data
+    structured_elements = df[['DrugNameWithoutDose', 'StrengthText', 'DrugUnit', 'DosageForm']].drop_duplicates()
     search_terms = api_rxnorm.make_string(structured_elements)
     
     if config.print_status:
-        print('Initiating API requests for Structured Elements')
+        print('Initiating ' + str(len(search_terms)) + ' API requests for Unique Meds')
     
-    # make iterable list of URLs to send to api
-    urls = api_rxnorm.make_url_requests(search_terms, 'string')
-    results = api_rxnorm.async_calls(urls)
-
-    # clean up & store in CSV
+    # prepare for storing in CSV
     structured_elements_to_rxcui = defaultdict(dict)
+    
+    # break dataframe into subsections to prevent API timeout
+    search_terms = [search_terms[i * config.batch_size:(i + 1) * config.batch_size] \
+                    for i in range((len(search_terms) + config.batch_size - 1) // config.batch_size)]
+    counter = 0
+                    
+    if config.print_status:
+        print('Large list of terms. Created ' + str(len(search_terms)) + ' batches.')
+    
+    for terms in search_terms:
+        if config.print_status:
+            counter += 1
+            print('Starting batch # ' + str(counter))
+        # make iterable list of URLs to send to api
+        urls = api_rxnorm.make_url_requests(terms, 'string')
+        results = api_rxnorm.async_calls(urls)
 
-    for result in results:
-        soup = BeautifulSoup(result, 'xml')
-        cui_all = soup.find_all('rxcui')
-        cui = set([])
-        for c in cui_all:
-            cui.add(int(c.get_text()))
-        # add to dictionary
-        unique_combo = soup.find('inputTerm').get_text()
-        structured_elements_to_rxcui[unique_combo] = cui
-
+        for result in results:
+            soup = BeautifulSoup(result, 'html.parser') #'xml')
+            cui_all = soup.find_all('rxcui')
+            cui = set([])
+            for c in cui_all:
+              cui.add(int(c.get_text()))
+            # add to dictionary
+            try:
+              unique_combo = soup.find('inputterm').get_text()
+              structured_elements_to_rxcui[unique_combo] = cui
+            except:
+              pass
+    
     structured_elements_to_rxcui = pd.DataFrame.from_dict(structured_elements_to_rxcui, orient='index')
     structured_elements_to_rxcui.reset_index(inplace=True)
     # make enough column names for all extra placeholders
@@ -296,25 +307,89 @@ def structured_elements2rxcui():
     
     if config.print_status:
         print('API requests for Structured Elements to RxCUI Complete.')
-        print('Initiating API requests for generic & brand RxCUIs...')
-
-    # search for generic & brand names
-    rxcui_brand_generic = api_rxnorm.getBrandGeneric(structured_elements_to_rxcui, cui_col='rxcui1')
-    
-    # coerce from dictionary to dataframe to allow merge
-    df = pd.DataFrame.from_dict(rxcui_brand_generic, orient='index')
-    df.rename(columns={0: 'rxcui1_brand', 1: 'rxcui1_generic'}, inplace=True)
-    df['rxcui1'] = df.index.astype(float)
     
     # merge & save
-    structured_elements_to_rxcui = structured_elements_to_rxcui.merge(df, how='left', on='rxcui1')
-    structured_elements_to_rxcui.to_csv('./structured_elements_to_rxcui.csv')
+    #structured_elements_to_rxcui = structured_elements_to_rxcui.merge(df, how='left', on='rxcui1')
+    structured_elements_to_rxcui.to_csv(config.out_dir + 'structured_elements_to_rxcui.csv', index=False)
     
     if config.print_status:
         print('All API requests for Structured Elements complete')
 
 # convert Structured Elements to RxCUIs - only need to execute once
 #structured_elements2rxcui()
+
+def cui2class(data):
+    """
+    Creates a .csv file containing the results of the RxNorm API
+    Allows calls to be made only once & can be merged onto data cube
+    Input: dataframe of unique drug/strength/unit/form along with best-matched RxCUIs
+    Output: CSV file with the corresponding drug classes
+    """
+
+    # load data & find unique values
+    df = data.drop(columns='unique_combo')
+    search_terms = np.unique(df.values)
+    # drop missing values
+    search_terms = search_terms[~np.isnan(search_terms)]
+    
+    # prep for storing in CSV
+    cui2class = defaultdict(dict)
+    
+    if config.print_status:
+        print('Initiating ' + str(len(search_terms)) + ' API requests for Drug Classes of RxCUIs')
+
+    # break dataframe into subsections to prevent API timeout
+    search_terms = [search_terms[i * config.batch_size:(i + 1) * config.batch_size] \
+                    for i in range((len(search_terms) + config.batch_size - 1) // config.batch_size)]
+    counter = 0
+                    
+    if config.print_status:
+        print('Large list of terms. Created ' + str(len(search_terms)) + ' batches.')
+
+    for terms in search_terms:
+        if config.print_status:
+            counter += 1
+            print('Starting batch # ' + str(counter))
+            
+        # make iterable list of URLs to send to api
+        urls = api_rxnorm.make_url_requests(terms, 'cui2class')
+        results = api_rxnorm.async_calls(urls)
+        
+        for result in results:
+            soup = BeautifulSoup(result, 'html.parser') #'xml')
+            class_all = soup.find_all('classname')
+            classes = set([])
+            for c in class_all:
+              classes.add(c.get_text())
+            # add to dictionary
+            try:
+                unique_combo = soup.find('rxcui').get_text()
+                cui2class[unique_combo] = classes
+            except:
+                pass
+    
+    cui2class = pd.DataFrame.from_dict(cui2class, orient='index')
+    cui2class.reset_index(inplace=True)
+    # make enough column names for all extra placeholders
+    cnames = ['rxcui']
+    for i in range(1, cui2class.shape[1]):
+        cnames.append('cat'+str(i))
+    cui2class.columns = cnames
+    
+    # coerce from dictionary to dataframe to allow merge
+    #df = pd.DataFrame.from_dict(rxcui_brand_generic, orient='index')
+    #df.rename(columns={0: 'rxcui1_brand', 1: 'rxcui1_generic'}, inplace=True)
+    #df['rxcui1'] = df.index.astype(float)
+    
+    # merge & save
+    #cui2class = cui2class.merge(df, how='left', on='rxcui1')
+    cui2class.to_csv(config.out_dir + 'cui2class.csv', index=False)
+    
+    if config.print_status:
+        print('All API requests for Converting RxCUIs to MESH Classes complete')
+
+# convert Structured Elements to RxCUIs - only need to execute once
+#cui2class(cuis)
 
 def coerce_nulls(text):
     """

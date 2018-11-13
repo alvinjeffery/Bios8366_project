@@ -35,7 +35,7 @@ def coerce_nulls(text):
         if np.isnan(text):
             return str('')
     except:
-        return str(text) + '%20'
+        return str('%20'.join(text.split())) + '%20'
 
 
 def make_string(df):
@@ -44,7 +44,6 @@ def make_string(df):
     Input: A dataframe containing DrugNameWithoutDose, StrengthNumeric, DrugUnit, & DosageForm
     Output: A list containing a Single string for all unique elements with spaces formatted for HTML
     """
-    df['StrengthText'] = df['StrengthNumeric'].map(coerce_numeric)
     df['full'] = df['DrugNameWithoutDose'].map(coerce_nulls) + \
                  df['StrengthText'].map(coerce_nulls) + \
                  df['DrugUnit'].map(coerce_nulls) + \
@@ -72,6 +71,10 @@ def make_url_requests(unique_terms, type, max_cuis=config.num_cuis):
             elif type == 'cui':
                 term = int(term)
                 urls.append('https://rxnav.nlm.nih.gov/REST/rxcui/' + str(term) + '/related?tty=SCD+SBD')
+                
+            elif type == 'cui2class':
+                term = int(term)
+                urls.append('https://rxnav.nlm.nih.gov/REST/rxclass/class/byRxcui.xml?rxcui=' + str(term) + '&relaSource=MeSH')
 
         except:
             continue
@@ -129,7 +132,7 @@ def getRxCUI(term, type, max_cuis=config.num_cuis):
         # String search can return multiple rxcui's, and they come in XML format
         url = 'https://rxnav.nlm.nih.gov/REST/approximateTerm?term=' + str(term) + '&maxEntries=' + str(max_cuis)
         response = requests.get(url, headers={'Content-Type': 'application/xml',})
-        soup = BeautifulSoup(response.text, 'xml')
+        soup = BeautifulSoup(response.text, 'html.parser') # 'xml')
         cui_all = soup.find_all('rxcui')
         cui = set([])
         for c in cui_all:
