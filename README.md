@@ -7,20 +7,20 @@
 Student name in parentheses indicates the student who took primary responsibility for the notebook.  
 
 1. Create Cohort (Kim): `base_table_creation.ipynb`  
-..* Input: `FONNESBECK_ADT_20151202.csv`
-..* Output: `adt_cms_final.pkl`
+  * Input: `FONNESBECK_ADT_20151202.csv`  
+  * Output: `adt_cms_final.pkl`  
 
 We removed pediatric and psychiatric patients because they are not eligible for the CMS readmission penalty.  
 
 2. Clean Phenotype, Medications, ICD, and CPT (Alvin): `descriptives_cpt_icd_meds_phenotype.ipynb`  
-..* Input: 
+  * Input: 
 ```
 FONNESBECK_phenotype_20151202.csv
 FONNESBECK_ICD9_20151202.csv
 FONNESBECK_CPT_20151202.csv
 FONNESBECK_MED_20151202.csv
 ```
-..* Output: 
+  * Output: 
 ```
 phenotype.pkl
 icd_wide.pkl
@@ -29,16 +29,16 @@ med_classes_final_ruids.pkl
 ```
 
 3. Clean (Patrick): `bios8366_fp_pw_120518.ipynb`  
-..* Input:  
+  * Input:  
 ```
 FONNESBECK_LAB2_20151202.csv # note "LAB2" instead of original "LAB"
 FONNESBECK_EGFR_20151202.csv
 FONNESBECK_BMI_20151202.csv
 ```
-..* Output: `labs.csv`  
+  * Output: `labs.csv`  
 
 4. Merge All Predictors onto Cohort (Alvin): `merging.ipynb`  
-..* Input:  
+  * Input:  
 ```
 adt_cms_final.pkl  
 phenotype.pkl  
@@ -47,15 +47,15 @@ cpt_wide.pkl
 med_classes_final_ruids.pkl
 labs.csv
 ```
-..* Output: `merged.csv`  
+  * Output: `merged.csv`  
 
 5. Imputation (Alvin): `impute.ipynb`  
-..* Input: `merged.csv`  
-..* Output: `data.pkl`  
+  * Input: `merged.csv`  
+  * Output: `data.pkl`  
 
 6. Analysis-Bayesian Regression (Kim): `bayesian_regression.ipynb`  
-..* Input: `data.pkl`  
-..* Output: Report only  
+  * Input: `data.pkl`  
+  * Output: Report only  
 
 7. Analysis-Random Forest (Alvin): `random_forest.ipynb`  
 
