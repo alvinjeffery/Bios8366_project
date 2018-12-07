@@ -9,9 +9,11 @@ Student name in parentheses indicates the student who took primary responsibilit
 
 Code File: `base_table_creation.ipynb`  
 
-| Input                             | Output(s)                 |
-| ---                               | ---                       |
-| `FONNESBECK_ADT_20151202.csv`     | `adt_cms_final.pkl`       |  
+| Input                                 | Output(s)                 |
+| ---                                   | ---                       |
+| `FONNESBECK_ADT_20151202.csv`         | `adt_cms_final.pkl`       |
+| `FONNESBECK_phenotype_20151202.csv`   |                           |
+| `FONNESBECK_CPT_20151202.csv`         |                           |  
 
 ## 2. Clean Phenotype, Medications, ICD, and CPT (Alvin)  
 > Major cleaning steps include mapping medications to medication classes with RxNorm API calls through helper functions and counted for each day.  ICD and CPT codes were rolled up to chapters (categories) and counted for each day.  
@@ -26,27 +28,57 @@ Code File: `descriptives_cpt_icd_meds_phenotype.ipynb`
 | `FONNESBECK_MED_20151202.csv`           | `med_classes_final_ruids.pkl`     |  
 
 
-3. **Clean Labs and BMI** (Patrick)  
-  * Code: `bios8366_fp_pw_120518.ipynb`  
-  * Input:  `FONNESBECK_LAB2_20151202.csv # note "LAB2" instead of original "LAB"`, `FONNESBECK_EGFR_20151202.csv`, `FONNESBECK_BMI_20151202.csv`  
-  * Output: `labs.csv`  
+## 3. Clean Labs and BMI (Patrick)  
+> Description goes here  
 
-4. **Merge All Predictors onto Cohort** (Alvin)  
-  * Code: `merging.ipynb`  
-  * Input:  `adt_cms_final.pkl`, `phenotype.pkl`, `icd_wide.pkl`, `cpt_wide.pkl`, `med_classes_final_ruids.pkl`, `labs.csv`  
-  * Output: `merged.csv`  
+Code File: `bios8366_fp_pw_120518.ipynb`   
+  
+| Input                                         | Output(s)                 |
+| ---                                           | ---                       |
+| `FONNESBECK_LAB2_20151202.csv` # note LAB2    | `labs.csv`       |
+| `FONNESBECK_EGFR_20151202.csv`                |                           |
+| `FONNESBECK_BMI_20151202.csv`                 |                           |  
 
-5. **Imputation** (Alvin)  
-  * Code: `impute.ipynb`  
-  * Input: `merged.csv`  
-  * Output: `data.pkl`  
+## 4. Merge All Predictors onto Cohort (Alvin)  
+> Descriptions goes here  
 
-6. **Analysis-Bayesian Regression** (Kim)  
-  * Code: `bayesian_regression.ipynb`  
-  * Input: `data.pkl`  
-  * Output: Report only  
+Code File: `merging.ipynb`  
+  
+| Input                             | Output(s)                 |
+| ---                               | ---                       |
+| `adt_cms_final.pkl`               | `merged.csv`              |
+| `phenotype.pkl`                   |                           |
+| `icd_wide.pkl`                    |                           |
+| `cpt_wide.pkl`                    |                           |
+| `med_classes_final_ruids.pkl`     |                           |
+| `labs.csv`                        |                           |  
 
-7. **Analysis-Random Forest** (Alvin)  
-  * Code: `random_forest.ipynb`  
+## 5. Imputation (Alvin)  
+> Description goes here  
+
+Code File: `impute.ipynb`
+
+| Input                             | Output(s)                 |
+| ---                               | ---                       |
+| `merged.csv`                      | `data.pkl`                |  
+
+## 6. Analysis-Bayesian Regression (Kim)  
+> Description goes here  
+
+Code File: `bayesian_regression.ipynb`  
+
+| Input                           | Output(s)                 |
+| ---                             | ---                       |
+| `data.pkl`                      | Report Only               |  
+
+
+## 7. Analysis-Random Forest (Alvin)  
+> Description goes here  
+
+Code File: `random_forest.ipynb`  
+
+| Input                           | Output(s)                 |
+| ---                             | ---                       |
+| `data.pkl`                      | Report Only               |  
 
 
