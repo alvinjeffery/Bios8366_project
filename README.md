@@ -6,13 +6,27 @@
 
 Student name in parentheses indicates the student who took primary responsibility for the notebook.  
 
-1. **Create Cohort** (Kim): We removed pediatric and psychiatric patients because they are not eligible for the CMS readmission penalty.  
+1. **Create Cohort** (Kim) 
+> We removed pediatric and psychiatric patients because they are not eligible for the CMS readmission penalty.  
+
+| Input                             | Code File                         | Output(s)                 |
+| ---                               | ---                               | ---                       |
+| `FONNESBECK_ADT_20151202.csv`     | `base_table_creation.ipynb`       | `adt_cms_final.pkl`       |  
+
   * Code: `base_table_creation.ipynb`  
   * Input: `FONNESBECK_ADT_20151202.csv`  
   * Output: `adt_cms_final.pkl`  
 
 
 2. **Clean Phenotype, Medications, ICD, and CPT** (Alvin)
+
+| Input                                   | Code File                                           | Output(s)                         |
+| ---                                     | ---                                                 | ---                               |
+| `FONNESBECK_phenotype_20151202.csv`     | `descriptives_cpt_icd_meds_phenotype.ipynb`         | `phenotype.pkl`                   |
+| `FONNESBECK_ICD9_20151202.csv`          |                                                     | `icd_wide.pkl`                    |
+| `FONNESBECK_CPT_20151202.csv`           |                                                     | `cpt_wide.pkl`                    |
+| `FONNESBECK_MED_20151202.csv`           |                                                     | `med_classes_final_ruids.pkl`     |  
+
   * Code: `descriptives_cpt_icd_meds_phenotype.ipynb`  
   * Input: `FONNESBECK_phenotype_20151202.csv`, `FONNESBECK_ICD9_20151202.csv`, `FONNESBECK_CPT_20151202.csv`, `FONNESBECK_MED_20151202.csv`  
   * Output: `phenotype.pkl`, `icd_wide.pkl`, `cpt_wide.pkl`, `med_classes_final_ruids.pkl`  
