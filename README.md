@@ -1,12 +1,10 @@
-# Bios8366 Final Project  
+# Bios8366 Final Project: Data Cleaning, Pre-Processing, & Analysis Pipeline  
 
 **Group Members:** Alvin Jeffery, Kim Kondratieff, Patrick Wu  
 
-## Data Cleaning, Pre-Processing, & Analysis Pipeline  
-
 Student name in parentheses indicates the student who took primary responsibility for the notebook.  
 
-1. **Create Cohort** (Kim) 
+## 1. Create Cohort (Kim)  
 > We removed pediatric and psychiatric patients because they are not eligible for the CMS readmission penalty.  
 
 Code File: `base_table_creation.ipynb`  
@@ -15,7 +13,8 @@ Code File: `base_table_creation.ipynb`
 | ---                               | ---                       |
 | `FONNESBECK_ADT_20151202.csv`     | `adt_cms_final.pkl`       |  
 
-2. **Clean Phenotype, Medications, ICD, and CPT** (Alvin)
+## 2. Clean Phenotype, Medications, ICD, and CPT (Alvin)  
+> Major cleaning steps include mapping medications to medication classes with RxNorm API calls through helper functions and counted for each day.  ICD and CPT codes were rolled up to chapters (categories) and counted for each day.  
 
 Code File: `descriptives_cpt_icd_meds_phenotype.ipynb`  
 
