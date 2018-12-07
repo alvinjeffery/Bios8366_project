@@ -60,7 +60,9 @@ Code File: `impute.ipynb`
 
 | Input                             | Output(s)                 |
 | ---                               | ---                       |
-| `merged.csv`                      | `data.pkl`                |  
+| `merged.csv`                      | `train_imputed.csv`       |
+|                                   | `valid_imputed.csv`       |  
+|                                   | `test_imputed.csv`        |  
 
 ## 6. Analysis-Bayesian Regression (Kim)  
 > Description goes here  
@@ -69,7 +71,7 @@ Code File: `bayesian_regression.ipynb`
 
 | Input                           | Output(s)                 |
 | ---                             | ---                       |
-| `data.pkl`                      | Report Only               |  
+| INSERT HERE                     | Report Only               |  
 
 
 ## 7. Analysis-Random Forest (Alvin)  
@@ -79,6 +81,8 @@ Code File: `random_forest.ipynb`
 
 | Input                           | Output(s)                 |
 | ---                             | ---                       |
-| `data.pkl`                      | Report Only               |  
+| `train_imputed.csv`             | Report Only               |
+| `valid_imputed.csv`             |                           |
+| `test_imputed.csv`              |                           |  
 
 
