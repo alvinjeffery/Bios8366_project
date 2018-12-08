@@ -8,8 +8,12 @@ library(Hmisc); library(dplyr); library(stringr)
 
 #### Load Data ####
 
+# local directory
 dir <- '/Volumes/AlvinSD/Bios8366_project/'
+
+# ACCRE directory
 #dir <- '/home/jeffead1/Bios8366_project/'
+
 df = read.csv(paste(dir, 'data/merged.csv', sep=''))
 
 df <- select(df, -ruid, -visit_id, -admit_date, -discharge_date,
@@ -69,9 +73,9 @@ formula <- as.formula(paste('~', vars))
 single_imp <- transcan(formula,
                        categorical=c('readmit_30d', 'sex', 'race'), #, 'pregnancy_indicator'),
                        
-                       #eps=0.5, # increase to speed up convergence
-                       #iter.max=1000, # prevent early stopping
-                       rhsImp='random', # as opposed to 'mean' only runs 5 iterations
+                       eps=0.2, # increase to speed up convergence (default=0.1)
+                       iter.max=1000, # prevent early stopping
+                       #rhsImp='random', # as opposed to 'mean' only runs 5 iterations
                        
                        # variables with fewer than 3 unique knots
                        asis=c('icd_dx_perinatal', 'icd_dx_skin'),
@@ -84,16 +88,15 @@ single_imp <- transcan(formula,
                        data=train)
 
 # save transcan object due to long run-time
-save(single_imp, file=paste(dir, 'data/single_imputation_training_localR.RData', sep=''))
+save(single_imp, file=paste(dir, 'data/single_imputation_training.RData', sep=''))
 
 # impute train data with transcan() object
 train_imp <- data.frame(impute.transcan(single_imp, data=train, list.out=T))
 
 #### Save Imputed Datasets ####
-
-write.csv(train_imp, file=paste(dir, 'data/train_imputed_localR.csv', sep=''))
-write.csv(valid_imp, file=paste(dir, 'data/valid_imputed_localR.csv', sep=''))
-write.csv(test_imp, file=paste(dir, 'data/test_imputed_localR.csv', sep=''))
+write.csv(train_imp, file=paste(dir, 'data/train_imputed.csv', sep=''))
+write.csv(valid_imp, file=paste(dir, 'data/valid_imputed.csv', sep=''))
+write.csv(test_imp, file=paste(dir, 'data/test_imputed.csv', sep=''))
 
 # retrieve from ACCRE
 # scp jeffead1@login.accre.vanderbilt.edu:/home/jeffead1/Bios8366_project/data/train_imputed.csv /Volumes/AlvinSD/Bios8366_project/data/
