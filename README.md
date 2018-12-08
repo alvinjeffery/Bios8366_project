@@ -40,7 +40,7 @@ Code File: `bios8366_fp_pw_120518.ipynb`
 | `FONNESBECK_BMI_20151202.csv`                 |                           |  
 
 ## 4. Merge All Predictors onto Cohort (Alvin)  
-> Descriptions goes here  
+> Thie notebook combines the work from (1), (2), and (3) above into a single flat-file for descriptive statistics, imputation, and analysis.  
 
 Code File: `merging.ipynb`  
   
@@ -53,8 +53,18 @@ Code File: `merging.ipynb`
 | `med_classes_final_ruids.pkl`     |                           |
 | `labs.csv`                        |                           |  
 
-## 5. Imputation (Alvin)  
+## 5. Descriptive Statistics (Patrick)  
 > Description goes here  
+
+Code File: `description.ipynb`
+
+| Input                             | Output(s)                 |
+| ---                               | ---                       |
+| `merged.csv`                      | Report Only               |  
+
+
+## 6. Imputation (Alvin)  
+> This R-based notebook uses `Hmisc::transcan()` to provide a single imputation of the data.  There is also a review of potentially redundant variables that could be exluded in the regression analysis.  
 
 Code File: `impute.ipynb`
 
@@ -64,7 +74,7 @@ Code File: `impute.ipynb`
 |                                   | `valid_imputed.csv`       |  
 |                                   | `test_imputed.csv`        |  
 
-## 6. Analysis-Bayesian Regression (Kim)  
+## 7. Analysis-Bayesian Regression (Kim)  
 > Description goes here  
 
 Code File: `bayesian_regression.ipynb`  
@@ -74,10 +84,10 @@ Code File: `bayesian_regression.ipynb`
 | INSERT HERE                     | Report Only               |  
 
 
-## 7. Analysis-Random Forest (Alvin)  
-> Description goes here  
+## 8. Analysis-Machine Learning (Alvin)  
+> Using hyperopt to explore the ideal classification algorithm(s) and best hyperparameters, this notebook identifies potential machine learning approaches for predicting 30-day readmissions.  
 
-Code File: `random_forest.ipynb`  
+Code File: `machine_learning.ipynb`  
 
 | Input                           | Output(s)                 |
 | ---                             | ---                       |
