@@ -67,9 +67,9 @@ Code File: `merging.ipynb`
 | `labs.csv`                        |                           |  
 
 ## 5. Descriptive Statistics (Patrick)  
-HTML of notebook is found in `reports` folder.  
+> HTML of notebook is found in `reports` folder.  
 
-This notebook takes non-imputed values from `merged.csv`, and extracts descriptive statistics (min, max, quartiles, median, mean, etc.) for predictor variables used in the statistical models. 
+> This notebook takes non-imputed values from `merged.csv`, and extracts descriptive statistics (min, max, quartiles, median, mean, etc.) for predictor variables used in the statistical models. 
 
 Code File: `nonimputed_data_summary_statistics.ipynb`
 
@@ -90,13 +90,15 @@ Code File: `impute.ipynb`
 |                                   | `test_imputed.csv`        |  
 
 ## 7. Analysis-Bayesian Regression (Kim)  
-> Description goes here  
+> This notebook explores several PyMC3 logistic regression model using the built-in GLM function, examining various variable subsets and their utility in predicting 30-day readmissions. Variable selection is performed using domain knowledge and the redundancy analysis carried out in the imputation notebook.
 
-Code File: `bayesian_regression.ipynb`  
+Code File: `bayesian_regression_model.ipynb`  
 
 | Input                           | Output(s)                 |
 | ---                             | ---                       |
-| INSERT HERE                     | Report Only               |  
+| `train_imputed.csv`             | Report Only               |
+| `valid_imputed.csv`             |                           |
+| `test_imputed.csv`              |                           |  
 
 
 ## 8. Analysis-Machine Learning (Alvin)  
