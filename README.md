@@ -40,7 +40,7 @@ Code File: `labs_bmi_bp_data_preprocessing.ipynb`
 | `FONNESBECK_LAB_20151202.csv`                 | `labs.csv`                |
 | `adt_cms_final.pkl`                           |                           |
 
-> From the cleaned 19 labs from `labs_bmi_bp_data_preprocessing.ipynb`, this notebook extracts 6 summary stats (5th percentile, 95th percentile, median, first measurement at visit, last measurement at visit, and standard deviation) that were used as predictor variables in the statistical models. This notebook also preprocesses BMI and pregnancy_indicator values before extracting last entries for each measurement at visit. Last, this notebook preprocesses blood pressure values and extracts the same 6 summary stats as was done for the labs
+> From the cleaned 19 labs from `labs_bmi_bp_data_preprocessing.ipynb`, this notebook extracts 6 summary stats (5th percentile, 95th percentile, median, first measurement at visit, last measurement at visit, and standard deviation) that were used as predictor variables in the statistical models. This notebook also preprocesses BMI and pregnancy_indicator values before extracting last entries for each measurement at visit. Last, this notebook preprocesses blood pressure values and extracts the same 6 summary stats as was done for the labs. Note that we decided not to use the EGFR data, as it is the value is calculated with measured Creatinine levels and is thus highly correlated. 
 
 Code File: `labs_bmi_bp_data_preprocessing_2.ipynb`
 
