@@ -31,14 +31,25 @@ Code File: `descriptives_cpt_icd_meds_phenotype.ipynb`
 ## 3. Clean Labs and BMI (Patrick)  
 > `adt_cms_final.pkl` = output from `base_table_creation.ipynb` that contains cohort information. `labs_cleaned.csv` = has columns ['ruid','lab_name','lab_date','lab_value','visit_id','hospital_day'] for 19 top labs by total count. I identified outliers in the original labs contained in `FONNESBECK_LAB_20151202.csv` by looking at the 1%, 99% of values, distribution, and looking at normal values in adults. Outliers were converted to 'NaN' for imputation in `impute.ipynb`.    
 
-Code File: `bios8366_fp_pw_120518.ipynb`   
+Code File: `labs_bmi_bp_data_preprocessing.ipynb`   
   
 | Input                                         | Output(s)                 |
 | ---                                           | ---                       |
 | `FONNESBECK_LAB_20151202.csv`                 | `labs.csv`                |
 | `adt_cms_final.pkl`                           |                           |
 
-Code File: `bios8366_fp_pw_120518.ipynb`
+> From the cleaned 19 labs from `labs_bmi_bp_data_preprocessing_2.ipynb`, this notebook extracts 6 summary stats (5th percerntile, 95th percentile, median, first measurement at visit, last measurement at visit, and standard deviation) that were used as predictor variables in the statistical models. This notebook also preprocesses BMI and pregnancy_indicator values and extracts last entry for each measurement at visit. Last, this notebook preprocesses blood pressure values and extracts the same 6 summary stats as for the labs. 
+
+Code File: `labs_bmi_bp_data_preprocessing_2.ipynb`
+
+| Input                                         | Output(s)                 |
+| ---                                           | ---                       |
+| `labs_cleaned.csv`                            | `labs.csv`                |
+|`FONNESBECK_BMI_20151202.csv`                  |                           |
+|`adt_cms_final.pkl`                            |                           |
+|`FONNESBECK_BP_20151202.csv`                   |                           |
+|`labs.csv`                                     |                           |    
+
 
 ## 4. Merge All Predictors onto Cohort (Alvin)  
 > Thie notebook combines the work from (1), (2), and (3) above into a single flat-file for descriptive statistics, imputation, and analysis.  
