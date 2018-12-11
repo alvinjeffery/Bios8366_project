@@ -16,9 +16,9 @@ Code File: `base_table_creation.ipynb`
 | `FONNESBECK_CPT_20151202.csv`         |                           |  
 
 ## 2. Clean Phenotype, Medications, ICD, and CPT (Alvin)  
-> Major cleaning steps include mapping medications to medication classes with RxNorm API calls through helper functions and counted for each day.  ICD and CPT codes were rolled up to chapters (categories) and counted for each day.  
+> Major cleaning steps include mapping medications to medication classes with RxNorm API calls through helper functions and counted for each day.  Converting strings to classes reduced the total number of potential features and allowed similar to medications to be collapsed into the same group.  ICD and CPT codes were rolled up to chapters (categories) and counted for each day.  
 
-Code File: `descriptives_cpt_icd_meds_phenotype.ipynb`  
+Code File: `cpt_icd_meds_phenotype_preprocessing.ipynb`  
 
 | Input                                   | Output(s)                         |
 | ---                                     | ---                               |
@@ -47,10 +47,10 @@ Code File: `labs_bmi_bp_data_preprocessing_2.ipynb`
 | Input                                         | Output(s)                 |
 | ---                                           | ---                       |
 | `labs_cleaned.csv`                            | `labs.csv`                |
-|`FONNESBECK_BMI_20151202.csv`                  |                           |
-|`adt_cms_final.pkl`                            |                           |
-|`FONNESBECK_BP_20151202.csv`                   |                           |
-|`labs.csv`                                     |                           |    
+| `FONNESBECK_BMI_20151202.csv`                 |                           |
+| `adt_cms_final.pkl`                           |                           |
+| `FONNESBECK_BP_20151202.csv`                  |                           |
+| `labs.csv`                                    |                           |    
 
 ## 4. Merge All Predictors onto Cohort (Alvin)  
 > Thie notebook combines the work from (1), (2), and (3) above into a single flat-file for descriptive statistics, imputation, and analysis.  
