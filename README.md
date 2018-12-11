@@ -29,15 +29,16 @@ Code File: `descriptives_cpt_icd_meds_phenotype.ipynb`
 
 
 ## 3. Clean Labs and BMI (Patrick)  
-> Description goes here  
+> `adt_cms_final.pkl` = output from `base_table_creation.ipynb` that contains cohort information. `labs_cleaned.csv` = has columns ['ruid','lab_name','lab_date','lab_value','visit_id','hospital_day'] for 19 top labs by total count. I identified outliers in the original labs contained in `FONNESBECK_LAB_20151202.csv` by looking at the 1%, 99% of values, distribution, and looking at normal values in adults. Outliers were converted to 'NaN' for imputation in `impute.ipynb`.    
 
 Code File: `bios8366_fp_pw_120518.ipynb`   
   
 | Input                                         | Output(s)                 |
 | ---                                           | ---                       |
-| `FONNESBECK_LAB2_20151202.csv` # note LAB2    | `labs.csv`       |
-| `FONNESBECK_EGFR_20151202.csv`                |                           |
-| `FONNESBECK_BMI_20151202.csv`                 |                           |  
+| `FONNESBECK_LAB_20151202.csv`                 | `labs.csv`                |
+| `adt_cms_final.pkl`                           |                           |
+
+Code File: `bios8366_fp_pw_120518.ipynb`
 
 ## 4. Merge All Predictors onto Cohort (Alvin)  
 > Thie notebook combines the work from (1), (2), and (3) above into a single flat-file for descriptive statistics, imputation, and analysis.  
