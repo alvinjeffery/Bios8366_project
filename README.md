@@ -29,6 +29,8 @@ Code File: `descriptives_cpt_icd_meds_phenotype.ipynb`
 
 
 ## 3. Clean Labs, BMI, and BPs (Patrick)  
+HTML files of the notebooks below are found in `reports` folder.  
+
 > `adt_cms_final.pkl` = output from `base_table_creation.ipynb` that contains cohort information. `labs_cleaned.csv` = has columns ['ruid','lab_name','lab_date','lab_value','visit_id','hospital_day'] for 19 top labs by total count. I identified outliers in the original labs contained in `FONNESBECK_LAB_20151202.csv` by looking at the 1%, 99% of values, distribution, and looking at normal values in adults. Outliers were converted to 'NaN' for imputation in `impute.ipynb`.    
 
 Code File: `labs_bmi_bp_data_preprocessing.ipynb`   
@@ -65,6 +67,8 @@ Code File: `merging.ipynb`
 | `labs.csv`                        |                           |  
 
 ## 5. Descriptive Statistics (Patrick)  
+HTML of notebook is found in `reports` folder.  
+
 This notebook takes non-imputed values from `merged.csv`, and extracts descriptive statistics (min, max, quartiles, median, mean, etc.) for predictor variables used in the statistical models. 
 
 Code File: `nonimputed_data_summary_statistics.ipynb`
