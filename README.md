@@ -100,7 +100,7 @@ Code File: `bayesian_regression.ipynb`
 
 
 ## 8. Analysis-Machine Learning (Alvin)  
-> Using hyperopt to explore the ideal classification algorithm(s) and best hyperparameters, this notebook identifies potential machine learning approaches for predicting 30-day readmissions.  
+> Using hyperopt and a cross-validated manual grid search to explore the ideal classification algorithm(s) and best hyperparameters, this notebook identifies potential machine learning approaches for predicting 30-day readmissions.  
 
 Code File: `machine_learning.ipynb`  
 
